@@ -1,0 +1,33 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Randomness
+    network: mumbai
+    source:
+      address: "0xFd64f0791126927e2d3CfC287D27bFfd4036FF10"
+      abi: Randomness
+      startBlock: 26572188
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - GameEnded
+        - GameStarted
+        - OwnershipTransferred
+        - PlayerJoined
+      abis:
+        - name: Randomness
+          file: ./abis/Randomness.json
+      eventHandlers:
+        - event: GameEnded(uint256,address,bytes32)
+          handler: handleGameEnded
+        - event: GameStarted(uint256,uint8,uint256)
+          handler: handleGameStarted
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PlayerJoined(uint256,address)
+          handler: handlePlayerJoined
+      file: ./src/randomness.ts
